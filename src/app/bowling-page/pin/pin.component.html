@@ -1,0 +1,10 @@
+<div class="flex-container">
+  <button *ngFor="let pin of pins;let i = index" type="button" class="pin-number"
+          (click)="onPinDown(pin)" [disabled]="disablePinClick">{{ pin}}</button>
+</div>
+<div>
+  <button type="button" (click)="newGame()">New Game</button>
+</div>
+<div>
+  <button *ngIf="disablePinClick" type="button" (click)="submit()">Submit</button>
+</div>

@@ -1,0 +1,24 @@
+.flex-container {
+  display: flex;
+  //border: 1px solid black;
+  flex-wrap: wrap;
+  //flex: 1 1 100px;
+}
+
+.pin-number {
+  background: #136899;
+  margin: 0 10px 0 10px;
+  padding: 0 10px 0 10px;
+  font-size: 20px;
+  border-radius: 5px;
+  color: #ffffff;
+  box-shadow: 2px 2px #136899;
+}
+
+.pin-number:active {
+  background: burlywood;
+}
+
+button:disabled {
+  background: grey;
+}
