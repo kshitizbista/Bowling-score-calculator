@@ -1,3 +1,9 @@
 <p>bowling-page works!</p>
-<app-pin [maxPin]="noOfPin" [maxRollPerFrame]="maxRollPerFrame" (shot)="onShot($event)"></app-pin>
+<!--<app-pin [totalPins]="totalPins" [maxRollPerFrame]="maxRollPerFrame" (shot)="onShot($event)"-->
+<!--         (startNewGame)="resetGame()" ></app-pin>-->
+
+<app-pin [totalPins]="totalPins" (shot)="onShot($event)"
+         [disabled]="isPinsDisabled" #pinComponent></app-pin>
+
+
 Total Score: {{scored}}

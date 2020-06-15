@@ -1,8 +1,10 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {BowlingState, framesSelector, Roll} from "./store/bowling-page.reducer";
 import {Subscription} from "rxjs";
 import {select, Store} from "@ngrx/store";
-import {storeRoll} from "./store/bowling-page.action";
+import {resetGame, storeRoll} from "./store/bowling-page.action";
+import {PinComponent} from "./pin/pin.component";
+import {Calculator} from "./calculator";
 
 @Component({
   selector: 'app-bowling-page',
@@ -11,12 +13,23 @@ import {storeRoll} from "./store/bowling-page.action";
 })
 export class BowlingPageComponent implements OnInit, OnDestroy {
 
-  scored: number;
   frames: Roll[];
+  roll: Roll;
+  scored: number;
+  totalPins: number;
   totalFrames: number;
-  maxRollPerFrame = 2;
-  noOfPin: number;
+  calculator: Calculator;
   subscription: Subscription;
+
+  // Holds roll count temporarily in normal play mode. Count is reset every time for a new frame
+  currentRollCount: number = 0;
+
+  // Holds roll count in bonus play mode. There can be maximum of three roll depending upon strike or spare in 10th frame
+  bonusRollCount: number = 0;
+
+  isPinsDisabled: boolean = false;
+
+  @ViewChild('pinComponent') pinComponent: PinComponent;
 
   constructor(private store: Store<BowlingState>) {
   }
@@ -25,81 +38,103 @@ export class BowlingPageComponent implements OnInit, OnDestroy {
     this.scored = 0;         // Saves the result of last calculation
     this.frames = [];        // Rolls of each frame
     this.totalFrames = 10;   // Limit of frames
-    this.noOfPin = 10;        // max  number of pin
+    this.totalPins = 10;     // max  number of pin
 
+    this.calculator = new Calculator();
     this.subscription = this.store.pipe(select(framesSelector)).subscribe(value => this.frames = value);
   }
 
 
-  onShot(value: Roll) {
-    // console.log('frame length:' + this.frames.length);
-    // console.log('limitFrames:' + this.limitFrames);
-    // console.log(`isplayable '${this.frames.length} < ${this.limitFrames}': ` + (this.isPlayable()));
-    if (this.isPlayable()) {
+  onShot(pinsHit: number) {
+    // if (this.isFinalFrame()) {
+    //   this.bonusPlay(pinsHit);
+    // } else {
+      this.normalPlay(pinsHit);
+    // }
+  }
 
-      // Verify the pin down doesnt exceeds max value
-      if ((value.first + value.second) > this.noOfPin) {
-        throw new Error(`There can only be maximum of ${this.noOfPin} pins down`);
+  normalPlay(pinsHit: number) {
+    this.currentRollCount++;
+    if (this.currentRollCount === 2) {
+      this.roll.second = pinsHit;
+      this.resetRollCountForNextFrame();
+      this.pinComponent.resetPins();
+      this.setScore(this.roll);
+    } else {
+      this.roll = new Roll();
+      this.roll.first = pinsHit;
+      if (this.calculator.isStrike(this.roll)) {
+        this.resetRollCountForNextFrame();
+        this.setScore(this.roll);
+      } else {
+        this.pinComponent.setRemainingPin(pinsHit);
       }
+    }
+  }
+
+
+  bonusPlay(pinsHit: number) {
+    this.bonusRollCount++;
+    if (this.bonusRollCount === 1) {
+      this.roll = new Roll();
+      this.roll.first = pinsHit;
+    } else if (this.bonusRollCount === 2) {
+      this.roll.second = pinsHit
+    } else {
+      this.roll.third = pinsHit;
+      this.setScore(this.roll, true);
+      this.disablePins();
+    }
+    if (this.calculator.isStrike(this.roll) || this.calculator.isSpare(this.roll)) {
+      this.pinComponent.resetPins();
+    } else if (this.calculator.isOpen(this.roll) && this.bonusRollCount === 2) {
+      this.pinComponent.resetPins();
+      this.setScore(this.roll, true);
+      this.disablePins();
+    } else {
+      this.pinComponent.setRemainingPin(this.roll.first);
+    }
+  }
+
+  isFinalFrame(): boolean {
+    return (this.frames.length < this.totalFrames) && (this.frames.length === (this.totalFrames - 1));
+  }
+
+  resetRollCountForNextFrame() {
+    this.currentRollCount = 0;
+  }
+
+  setScore(value: Roll, isBonus: boolean = false) {
+    if (this.isPlayable()) {
+      // Verify the pin down doesnt exceeds max value
+      // if ((value.first + value.second) > this.totalPins) {
+      //   throw new Error(`There can only be maximum of ${this.totalPins} pins down`);
+      // }
       this.store.dispatch(storeRoll({roll: value}));
     }
-    // console.log('after dispatch frame length:' + this.frames.length)
-    // console.log('--------------------')
-    this.calculate();
+    this.scored = this.calculator.calculate(this.frames, isBonus);
   }
-
-  // Calculates the score and store the value
-  calculate() {
-    let score = 0;
-    for (let i = 0; i < this.frames.length; i++) {
-      const current: Roll = this.frames[i];
-      const next: Roll = this.checkNext(this.frames[i + 1]);
-
-      // Check if is STRIKE
-      if (this.isStrike(current)) {
-        score += this.sumIndexes(next) + current.first;
-      }
-      // Check if is SPARE
-      else if (this.isSpare(current)) {
-        score += this.sumIndexes(current) + next.first;
-      }
-      // Check if is NORMAL
-      else {
-        score += this.sumIndexes(current);
-      }
-    }
-    this.scored = score;
-    return score;
-  }
-
 
   // Check if the limit	of frames was reached
-  isPlayable() {
+  isPlayable(): boolean {
     return this.frames.length < this.totalFrames;
   }
 
-  // Check if the roll is STRIKE
-  isStrike(roll: Roll): boolean {
-    return roll.first === 10;
+  enablePins() {
+    this.isPinsDisabled = false;
   }
 
-  // Check if the roll is SPARE
-  isSpare(roll: Roll): boolean {
-    return (roll.first + roll.second) === 10;
+  disablePins() {
+    this.isPinsDisabled = true;
   }
 
-  // get total of given roll as integer
-  sumIndexes(roll: Roll): number {
-    return roll.first + roll.second;
-  }
-
-  // set roll object fields to 0. This is for handling undefined or null value if there is no roll in a frame.
-  checkNext(val: Roll): Roll {
-    return val == undefined ? {first: 0, second: 0} : val
+  newGame() {
+    this.store.dispatch(resetGame());
+    this.calculator.calculate(this.frames, false);
+    this.enablePins();
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
-
 }
