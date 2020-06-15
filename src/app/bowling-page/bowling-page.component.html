@@ -1,13 +1,19 @@
 <div class="bowling-page-container">
   <div class="card">
-    <div class="card-container">
-      <span class="card-title">Bowling Score Card</span>
+    <div class="card-body">
+      <p class="card-title">Bowling Score Card</p>
+      <p class="meta-data" [ngClass]="{'game-over': (frames.length + 1) > totalFrames}">
+        {{(frames.length + 1) <= totalFrames ? 'Frame: ' + (frames.length + 1) : 'Game Over'}}</p>
     </div>
   </div>
-  <app-pin [totalPins]="totalPins" (shot)="onShot($event)"
-           [disabled]="isPinsDisabled" #pinComponent></app-pin>
-  <app-score-board [frames]="frames" [frameScores]="scored.frameScores"
-                   [totalScore]="scored.totalScore"></app-score-board>
+    <app-pin [totalPins]="totalPins" (shot)="onShot($event)"
+              #pinComponent></app-pin>
+  <div id="new-game" *ngIf="(frames.length + 1) > totalFrames">
+    <button type="button" (click)="newGame()">Start New Game</button>
+  </div>
+
+    <app-score-board [frames]="frames" [frameScores]="scored.frameScores"
+                     [totalScore]="scored.totalScore"></app-score-board>
 </div>
 
 

@@ -1,1 +1,37 @@
+.score-board-container {
+  margin: 0 10px 0 10px;
+}
+
+#score-board {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 14px;
+
+  td, th {
+    border: 1px solid rgba(221, 221, 221);
+    padding: 2px;
+    text-align: center;
+  }
+
+  tr:nth-child(even) {
+    background-color: rgba(242, 242, 242);
+  }
+
+  tr:hover {
+    background-color: rgba(221, 221, 221);
+  }
+
+  th {
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: left;
+    background-color: darkslategray;
+    color: white;
+  }
+}
+
+#total-score {
+  margin: 5px 0 5px 0;
+  text-align: center;
+}
 

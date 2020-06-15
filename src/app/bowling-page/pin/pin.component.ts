@@ -8,12 +8,13 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 export class PinComponent implements OnInit {
   availablePins: number[]
   @Input() totalPins: number;
-  @Input() disabled = false;
   @Output() shot = new EventEmitter<number>();
+  unavailablePinCounter: number;
 
   ngOnInit(): void {
     // Initialize pins for first time
     this.resetPins();
+    this.preparePins(this.totalPins);
   }
 
   onPinsHit(count: number) {
@@ -27,12 +28,11 @@ export class PinComponent implements OnInit {
     }
   }
 
-  setRemainingPin(pinsHit: number) {
-    const remainingPin = this.totalPins - pinsHit;
-    this.preparePins(remainingPin);
+  disableUnavailablePins(pinsHit: number) {
+    this.unavailablePinCounter = pinsHit;
   }
 
   resetPins() {
-    this.preparePins(this.totalPins);
+    this.unavailablePinCounter = 0;
   }
 }

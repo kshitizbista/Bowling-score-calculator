@@ -46,10 +46,12 @@ export class BowlingPageComponent implements OnInit, OnDestroy {
 
 
   onShot(pinsHit: number) {
-    // if (this.isFinalFrame()) {
+    // if (this.isFinalFrame() && this.isPlayable()) {
     //   this.bonusPlay(pinsHit);
     // } else {
-    this.normalPlay(pinsHit);
+    if (this.isPlayable()) {
+      this.normalPlay(pinsHit);
+    }
     // }
   }
 
@@ -67,11 +69,10 @@ export class BowlingPageComponent implements OnInit, OnDestroy {
         this.resetRollCountForNextFrame();
         this.setScore(this.roll);
       } else {
-        this.pinComponent.setRemainingPin(pinsHit);
+        this.pinComponent.disableUnavailablePins(pinsHit);
       }
     }
   }
-
 
   bonusPlay(pinsHit: number) {
     this.bonusRollCount++;
@@ -83,16 +84,16 @@ export class BowlingPageComponent implements OnInit, OnDestroy {
     } else {
       this.roll.third = pinsHit;
       this.setScore(this.roll, true);
-      this.disablePins();
+      this.resetBonusCount();
     }
     if (this.calculator.isStrike(this.roll) || this.calculator.isSpare(this.roll)) {
       this.pinComponent.resetPins();
     } else if (this.calculator.isOpen(this.roll) && this.bonusRollCount === 2) {
       this.pinComponent.resetPins();
       this.setScore(this.roll, true);
-      this.disablePins();
+      this.resetBonusCount();
     } else {
-      this.pinComponent.setRemainingPin(this.roll.first);
+      this.pinComponent.disableUnavailablePins(this.roll.first);
     }
   }
 
@@ -104,37 +105,28 @@ export class BowlingPageComponent implements OnInit, OnDestroy {
     this.currentRollCount = 0;
   }
 
-  setScore(value: Roll, isBonus: boolean = false) {
-    if (this.isPlayable()) {
-      // Verify the pin down doesnt exceeds max value
-      // if ((value.first + value.second) > this.totalPins) {
-      //   throw new Error(`There can only be maximum of ${this.totalPins} pins down`);
-      // }
-
-      this.store.dispatch(storeRoll({roll: value}));
-    }
-    this.scored = this.calculator.calculate(this.frames, isBonus);
-    console.log(this.scored);
+  resetBonusCount() {
+    this.bonusRollCount = 0;
   }
 
+  setScore(value: Roll, isBonus: boolean = false) {
+    // Verify the pin down doesnt exceeds max value
+    if ((value.first + value.second) > this.totalPins && !isBonus) {
+      throw new Error(`There can only be maximum of ${this.totalPins} pins down`);
+    }
+    this.store.dispatch(storeRoll({roll: value}));
+    this.scored = this.calculator.calculate(this.frames, isBonus);
+  }
 
   // Check if the limit	of frames was reached
   isPlayable(): boolean {
     return this.frames.length < this.totalFrames;
   }
 
-  enablePins() {
-    this.isPinsDisabled = false;
-  }
-
-  disablePins() {
-    this.isPinsDisabled = true;
-  }
-
   newGame() {
     this.store.dispatch(resetGame());
-    this.calculator.calculate(this.frames, false);
-    this.enablePins();
+    this.pinComponent.resetPins();
+    this.scored = this.calculator.calculate(this.frames, false);
   }
 
   ngOnDestroy() {

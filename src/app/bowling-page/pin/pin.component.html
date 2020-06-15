@@ -1,5 +1,5 @@
 <div class="flex-container">
   <button *ngFor="let pin of availablePins;let i = index" type="button" class="pin-number"
-          (click)="onPinsHit(pin)" [disabled]="disabled">{{pin}}</button>
+          (click)="onPinsHit(pin)" [disabled]="((i + unavailablePinCounter) > totalPins)">{{pin}}</button>
 </div>
 
