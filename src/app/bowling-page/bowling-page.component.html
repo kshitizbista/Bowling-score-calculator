@@ -1,9 +1,13 @@
-<p>bowling-page works!</p>
-<!--<app-pin [totalPins]="totalPins" [maxRollPerFrame]="maxRollPerFrame" (shot)="onShot($event)"-->
-<!--         (startNewGame)="resetGame()" ></app-pin>-->
+<div class="bowling-page-container">
+  <div class="card">
+    <div class="card-container">
+      <span class="card-title">Bowling Score Card</span>
+    </div>
+  </div>
+  <app-pin [totalPins]="totalPins" (shot)="onShot($event)"
+           [disabled]="isPinsDisabled" #pinComponent></app-pin>
+  <app-score-board [frames]="frames" [frameScores]="scored.frameScores"
+                   [totalScore]="scored.totalScore"></app-score-board>
+</div>
 
-<app-pin [totalPins]="totalPins" (shot)="onShot($event)"
-         [disabled]="isPinsDisabled" #pinComponent></app-pin>
 
-
-Total Score: {{scored}}

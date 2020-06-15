@@ -3,8 +3,9 @@ import {Roll} from "./store/bowling-page.reducer";
 export class Calculator {
 
   // Calculates the score and store the value
-  calculate(frames: Roll[], isBonus) {
-    let score = 0;
+  calculate(frames: Roll[], isBonus): { totalScore: number, frameScores: number[] } {
+    let totalScore: number = 0;
+    let frameScores: number[] = [];
     for (let i = 0; i < frames.length; i++) {
       const current: Roll = frames[i];
       const next: Roll = this.checkNext(frames[i + 1]);
@@ -12,16 +13,21 @@ export class Calculator {
       // if (!isBonus) {
       // Check if roll is STRIKE
       if (this.isStrike(current)) {
-        score += this.sumIndexes(next) + current.first;
+        frameScores.push(this.getStrikeScore(current, next));
+        totalScore += this.getStrikeScore(current, next);
+
       }
       // Check if roll is SPARE
       else if (this.isSpare(current)) {
-        score += this.sumIndexes(current) + next.first;
+        frameScores.push(this.getSpareScore(current, next));
+        totalScore += this.getSpareScore(current, next);
       }
       // Check if roll is NORMAL
       else {
-        score += this.sumIndexes(current);
+        frameScores.push(this.sumIndexes(current));
+        totalScore += this.sumIndexes(current);
       }
+
       // }
 
       // else {
@@ -40,7 +46,10 @@ export class Calculator {
       // }
 
     }
-    return score;
+    return {
+      totalScore,
+      frameScores: frameScores
+    };
   }
 
   // Check if the roll is STRIKE
@@ -65,5 +74,13 @@ export class Calculator {
   // set roll object fields to 0. This is for handling undefined or null value.
   private checkNext(val: Roll): Roll {
     return val == undefined ? {first: 0, second: 0} : val
+  }
+
+  private getStrikeScore(current: Roll, next: Roll) {
+    return this.sumIndexes(next) + current.first;
+  }
+
+  private getSpareScore(current: Roll, next: Roll) {
+    return this.sumIndexes(current) + next.first
   }
 }

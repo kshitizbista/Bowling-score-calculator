@@ -12,18 +12,11 @@ export class Roll {
   third?: number;
 }
 
-export interface Frame {
-  roll: Roll;
-  score: number;
-}
-
 export interface BowlingState {
-  totalScore: number;
   frames: Roll[];
 }
 
 const initialState: BowlingState = {
-  totalScore: 0,
   frames: []
 };
 

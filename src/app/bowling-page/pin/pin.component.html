@@ -1,13 +1,5 @@
 <div class="flex-container">
-<!--  <button *ngFor="let pin of availablePins;let i = index" type="button" class="pin-number"-->
-<!--          (click)="onPinDown(pin)" [disabled]="enableSubmit">{{pin}}</button>-->
-
   <button *ngFor="let pin of availablePins;let i = index" type="button" class="pin-number"
           (click)="onPinsHit(pin)" [disabled]="disabled">{{pin}}</button>
 </div>
-<!--<div>-->
-<!--  <button type="button" (click)="newGame()">New Game</button>-->
-<!--</div>-->
-<div>
-<!--  <button *ngIf="enableSubmit" type="button" (click)="submit()">Submit</button>-->
-</div>
+
