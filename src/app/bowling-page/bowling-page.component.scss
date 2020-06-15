@@ -1,0 +1,43 @@
+.card {
+  width: 100%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  text-align: center;
+  background: rgba(19, 104, 153);
+  color: white;
+  border-radius: 5px;
+  margin-bottom: 10px;
+
+  &:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  }
+}
+
+.card-title {
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.card-body {
+  padding: 5px;
+}
+
+.meta-data {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+#new-game {
+  text-align: center;
+  margin-top: 10px;
+
+  > button {
+    background: rgba(19, 104, 153, 0.6);
+    color: rgba(242, 242, 242);
+  }
+}
+
+.game-over {
+  color: rgba(220, 20, 60);
+}
+
