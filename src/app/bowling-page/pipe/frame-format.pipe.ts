@@ -18,7 +18,7 @@ export class FrameFormatPipe implements PipeTransform {
 
     value.forEach((rolls, index) => {
       const frameNumber = index + 1;
-      let totalScore = 0;
+      let totalScore = null;
       if (rolls.first != null) {
         formattedValues.push({frameNumber, roll: 1, pinsHit: rolls.first, totalScore})
       }
