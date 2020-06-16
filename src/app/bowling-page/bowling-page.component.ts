@@ -4,7 +4,7 @@ import {Subscription} from "rxjs";
 import {select, Store} from "@ngrx/store";
 import {resetGame, storeRoll} from "./store/bowling-page.action";
 import {PinComponent} from "./pin/pin.component";
-import {Calculator} from "./calculator";
+import {BlowingCalculator} from "./blowing-calculator";
 
 @Component({
   selector: 'app-bowling-page',
@@ -18,16 +18,19 @@ export class BowlingPageComponent implements OnInit, OnDestroy {
   scored: { totalScore: number, frameScores: number[] };
   totalPins: number;
   totalFrames: number;
-  calculator: Calculator;
+  calculator: BlowingCalculator;
   subscription: Subscription;
 
-  // Holds roll count temporarily in normal play mode. Count is reset every time for a new frame
+  /**
+   * Holds roll count temporarily in normal play mode. Count is reset every time for a new frame
+   */
   currentRollCount: number = 0;
 
-  // Holds roll count in bonus play mode. There can be maximum of three roll depending upon strike or spare in 10th frame
+  /**
+   *  Holds roll count in bonus play mode. There can be maximum of three roll depending upon strike or
+   *  spare in 10th frame
+   */
   bonusRollCount: number = 0;
-
-  isPinsDisabled: boolean = false;
 
   @ViewChild('pinComponent') pinComponent: PinComponent;
 
@@ -35,24 +38,24 @@ export class BowlingPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.scored = {totalScore: 0, frameScores: []};         // Saves the result of last calculation
-    this.frames = [];        // Rolls of each frame
-    this.totalFrames = 10;   // Limit of frames
+    this.scored = {totalScore: 0, frameScores: []};         // stores the result of last calculation
+    this.frames = [];        // rolls of each frame
+    this.totalFrames = 10;   // limit of frames
     this.totalPins = 10;     // max  number of pin
 
-    this.calculator = new Calculator();
+    this.calculator = new BlowingCalculator();
     this.subscription = this.store.pipe(select(framesSelector)).subscribe(value => this.frames = value);
   }
 
 
   onShot(pinsHit: number) {
-    // if (this.isFinalFrame() && this.isPlayable()) {
-    //   this.bonusPlay(pinsHit);
-    // } else {
-    if (this.isPlayable()) {
-      this.normalPlay(pinsHit);
+    if (this.isFinalFrame() && this.isPlayable()) {
+      this.bonusPlay(pinsHit);
+    } else {
+      if (this.isPlayable()) {
+        this.normalPlay(pinsHit);
+      }
     }
-    // }
   }
 
   normalPlay(pinsHit: number) {
@@ -110,15 +113,16 @@ export class BowlingPageComponent implements OnInit, OnDestroy {
   }
 
   setScore(value: Roll, isBonus: boolean = false) {
-    // Verify the pin down doesnt exceeds max value
     if ((value.first + value.second) > this.totalPins && !isBonus) {
       throw new Error(`There can only be maximum of ${this.totalPins} pins down`);
     }
     this.store.dispatch(storeRoll({roll: value}));
-    this.scored = this.calculator.calculate(this.frames, isBonus);
+    this.scored = this.calculator.calculate(this.frames);
   }
 
-  // Check if the limit	of frames was reached
+  /**
+   * check if the limit  of frames was reached
+   */
   isPlayable(): boolean {
     return this.frames.length < this.totalFrames;
   }
@@ -126,7 +130,7 @@ export class BowlingPageComponent implements OnInit, OnDestroy {
   newGame() {
     this.store.dispatch(resetGame());
     this.pinComponent.resetPins();
-    this.scored = this.calculator.calculate(this.frames, false);
+    this.scored = this.calculator.calculate(this.frames);
   }
 
   ngOnDestroy() {

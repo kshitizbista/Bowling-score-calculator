@@ -1,13 +1,13 @@
 import {async} from "@angular/core/testing";
-import {Calculator} from "./calculator";
+import {BlowingCalculator} from "./blowing-calculator";
 import {Roll} from "./store/bowling-page.reducer";
 
-describe('Calculator', () => {
+describe('Bowling Calculator', () => {
 
-  let calculator: Calculator;
+  let calculator: BlowingCalculator;
 
   beforeEach(async(() => {
-    calculator = new Calculator();
+    calculator = new BlowingCalculator();
   }));
 
   it('create an instance', () => {
