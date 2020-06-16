@@ -3,7 +3,7 @@ import {Roll} from "./store/bowling-page.reducer";
 export class Calculator {
 
   // Calculates the score and store the value
-  calculate(frames: Roll[], isBonus): { totalScore: number, frameScores: number[] } {
+  calculate(frames: Roll[], isBonus = false): { totalScore: number, frameScores: number[] } {
     let totalScore: number = 0;
     let frameScores: number[] = [];
     for (let i = 0; i < frames.length; i++) {

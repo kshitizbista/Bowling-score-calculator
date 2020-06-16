@@ -8,7 +8,7 @@
   </div>
     <app-pin [totalPins]="totalPins" (shot)="onShot($event)"
               #pinComponent></app-pin>
-  <div id="new-game" *ngIf="(frames.length + 1) > totalFrames">
+  <div id="new-game" *ngIf="(frames && frames.length + 1) > totalFrames">
     <button type="button" (click)="newGame()">Start New Game</button>
   </div>
 
