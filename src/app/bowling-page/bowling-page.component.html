@@ -1,9 +1,9 @@
 <div class="bowling-page-container">
   <div class="card">
     <div class="card-body">
-      <p class="card-title">Bowling Score Card</p>
-      <p class="meta-data" [ngClass]="{'game-over': (frames.length + 1) > totalFrames}">
-        {{(frames.length + 1) <= totalFrames ? 'Frame: ' + (frames.length + 1) : 'Game Over'}}</p>
+      <h3 class="meta-data">Bowling Score Card</h3>
+      <h4 class="meta-data" [ngClass]="{'game-over': (frames.length + 1) > totalFrames}">
+        {{(frames.length + 1) <= totalFrames ? 'Frame: ' + (frames.length + 1) : 'Game Over'}}</h4>
     </div>
   </div>
     <app-pin [totalPins]="totalPins" (shot)="onShot($event)"

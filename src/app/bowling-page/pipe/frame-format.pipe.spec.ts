@@ -19,11 +19,11 @@ describe('FrameFormatPipe', () => {
       const rolls: Roll[] = [{first: 9, second: 1}, {first: 2, second: 2}, {first: 7, second: 3}];
       const framesScore: number[] = [12, 4, 10];
       const expectedValue: ScoreBoard[] = [
-        {frameNumber: 1, roll: 1, pinsHit: 9, totalScore: 0},
+        {frameNumber: 1, roll: 1, pinsHit: 9, totalScore: null},
         {frameNumber: 1, roll: 2, pinsHit: 1, totalScore: 12},
-        {frameNumber: 2, roll: 1, pinsHit: 2, totalScore: 0},
+        {frameNumber: 2, roll: 1, pinsHit: 2, totalScore: null},
         {frameNumber: 2, roll: 2, pinsHit: 2, totalScore: 4},
-        {frameNumber: 3, roll: 1, pinsHit: 7, totalScore: 0},
+        {frameNumber: 3, roll: 1, pinsHit: 7, totalScore: null},
         {frameNumber: 3, roll: 2, pinsHit: 3, totalScore: 10},
       ]
       expect(pipe.transform(rolls, framesScore)).toEqual(expectedValue);
