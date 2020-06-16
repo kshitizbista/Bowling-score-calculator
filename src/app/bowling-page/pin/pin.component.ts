@@ -13,7 +13,6 @@ export class PinComponent implements OnInit {
 
   ngOnInit(): void {
     // Initialize pins for first time
-    this.resetPins();
     this.preparePins(this.totalPins);
   }
 
