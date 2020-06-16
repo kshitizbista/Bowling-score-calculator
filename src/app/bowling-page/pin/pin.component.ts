@@ -20,6 +20,10 @@ export class PinComponent implements OnInit {
     this.shot.emit(count);
   }
 
+  /**
+   * creates an array for displaying buttons on the html
+   * @param numberOfPins
+   */
   preparePins(numberOfPins: number) {
     this.availablePins = [];
     for (let i = 0; i <= numberOfPins; i++) {
@@ -27,6 +31,10 @@ export class PinComponent implements OnInit {
     }
   }
 
+  /**
+   * disables the remaining buttons based on pin hits of the roll
+   * @param pinsHit
+   */
   disableUnavailablePins(pinsHit: number) {
     this.unavailablePinCounter = pinsHit;
   }
