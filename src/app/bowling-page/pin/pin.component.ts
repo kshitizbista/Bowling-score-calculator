@@ -6,7 +6,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
   styleUrls: ['./pin.component.scss'],
 })
 export class PinComponent implements OnInit {
-  availablePins: number[]
+  availablePins: number[];
   @Input() totalPins: number;
   @Output() shot = new EventEmitter<number>();
   unavailablePinCounter: number;
@@ -22,7 +22,6 @@ export class PinComponent implements OnInit {
 
   /**
    * creates an array for displaying buttons on the html
-   * @param numberOfPins
    */
   preparePins(numberOfPins: number) {
     this.availablePins = [];
@@ -33,7 +32,6 @@ export class PinComponent implements OnInit {
 
   /**
    * disables the remaining buttons based on pin hits of the roll
-   * @param pinsHit
    */
   disableUnavailablePins(pinsHit: number) {
     this.unavailablePinCounter = pinsHit;

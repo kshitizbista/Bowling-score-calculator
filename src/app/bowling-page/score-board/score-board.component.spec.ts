@@ -1,7 +1,7 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {ScoreBoardComponent} from './score-board.component';
-import {DebugElement, Pipe, PipeTransform} from "@angular/core";
-import {By} from "@angular/platform-browser";
+import {DebugElement, Pipe, PipeTransform} from '@angular/core';
+import {By} from '@angular/platform-browser';
 
 @Pipe({
   name: 'frameFormat'
@@ -41,7 +41,7 @@ describe('ScoreBoardComponent', () => {
     const h1De = debugElement.query(By.css('#total-score'));
     const h1: HTMLElement = h1De.nativeElement;
     expect(h1.textContent).toEqual('Total Score: 70');
-  })
+  });
 
   it('should create score board table', () => {
     component.frames = [{first: 1, second: 2}, {first: 5, second: 5}];
@@ -49,5 +49,5 @@ describe('ScoreBoardComponent', () => {
     const tableDe = debugElement.query(By.css('#score-board'));
     const table: HTMLElement = tableDe.nativeElement;
     expect(table).toBeTruthy();
-  })
+  });
 });

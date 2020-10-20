@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Roll} from "../store/bowling-page.reducer";
+import {Roll} from '../store/bowling-page.reducer';
 
 @Component({
   selector: 'app-score-board',

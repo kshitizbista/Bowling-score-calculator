@@ -1,6 +1,6 @@
 import {FrameFormatPipe, ScoreBoard} from './frame-format.pipe';
-import {Roll} from "../store/bowling-page.reducer";
-import {async} from "@angular/core/testing";
+import {Roll} from '../store/bowling-page.reducer';
+import {async} from '@angular/core/testing';
 
 describe('FrameFormatPipe', () => {
 
@@ -25,21 +25,21 @@ describe('FrameFormatPipe', () => {
         {frameNumber: 2, roll: 2, pinsHit: 2, totalScore: 4},
         {frameNumber: 3, roll: 1, pinsHit: 7, totalScore: null},
         {frameNumber: 3, roll: 2, pinsHit: 3, totalScore: 10},
-      ]
+      ];
       expect(pipe.transform(rolls, framesScore)).toEqual(expectedValue);
     }
   );
 
   it('should not return incorrect score board object',
     () => {
-      const pipe = new FrameFormatPipe();
+      const formatPipe = new FrameFormatPipe();
       const rolls: Roll[] = [{first: 5, second: 5}];
       const framesScore: number[] = [10];
       const expectedValue: ScoreBoard[] = [
         {frameNumber: 1, roll: 1, pinsHit: 5, totalScore: 0},
         {frameNumber: 1, roll: 2, pinsHit: 5, totalScore: 12},
-      ]
-      expect(pipe.transform(rolls, framesScore)).not.toEqual(expectedValue);
+      ];
+      expect(formatPipe.transform(rolls, framesScore)).not.toEqual(expectedValue);
     }
   );
 });

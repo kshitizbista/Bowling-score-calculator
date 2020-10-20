@@ -1,6 +1,6 @@
-import {async} from "@angular/core/testing";
-import {BlowingCalculator} from "./blowing-calculator";
-import {Roll} from "./store/bowling-page.reducer";
+import {async} from '@angular/core/testing';
+import {BlowingCalculator} from './blowing-calculator';
+import {Roll} from './store/bowling-page.reducer';
 
 describe('Bowling Calculator', () => {
 
@@ -34,9 +34,10 @@ describe('Bowling Calculator', () => {
     expect(calculator.calculate(roll)).toEqual({totalScore: 9, frameScores: [5, 4]});
   });
 
-  it('for a spare, #calculate should add current frame score and the number of pins knocked down in the first roll of the following frame', () => {
+  it('for a spare, #calculate should add current frame score and the number of pins knocked down in the ' +
+    'first roll of the following frame', () => {
     const frames: Roll[] = [{first: 8, second: 2}, {first: 1, second: 2}];
-    expect(calculator.calculate(frames)).toEqual({totalScore: 14, frameScores: [11, 3]})
+    expect(calculator.calculate(frames)).toEqual({totalScore: 14, frameScores: [11, 3]});
   });
 
   it('for a strike, the score is 10 + the sum of the two rolls in the following frame', () => {

@@ -1,7 +1,7 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {BowlingPageComponent} from './bowling-page.component';
-import {Component} from "@angular/core";
-import {MockStore, provideMockStore} from "@ngrx/store/testing";
+import {Component} from '@angular/core';
+import {MockStore, provideMockStore} from '@ngrx/store/testing';
 
 @Component({selector: 'app-pin', template: ''})
 class MockPinComponent {

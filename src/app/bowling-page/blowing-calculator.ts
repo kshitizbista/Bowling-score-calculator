@@ -1,4 +1,4 @@
-import {Roll} from "./store/bowling-page.reducer";
+import {Roll} from './store/bowling-page.reducer';
 
 export class BlowingCalculator {
 
@@ -8,8 +8,8 @@ export class BlowingCalculator {
    * @param isBonus, flag to check for bonus roll
    */
   calculate(frames: Roll[]): { totalScore: number, frameScores: number[] } {
-    let totalScore: number = 0;
-    let frameScores: number[] = [];
+    let totalScore = 0;
+    const frameScores: number[] = [];
     for (let i = 0; i < frames.length; i++) {
       const current: Roll = frames[i];
       const next: Roll = this.checkNext(frames[i + 1]);
@@ -33,13 +33,12 @@ export class BlowingCalculator {
     }
     return {
       totalScore,
-      frameScores: frameScores
+      frameScores
     };
   }
 
   /**
    * check if the roll is STRIKE
-   * @param roll
    */
   isStrike(roll: Roll): boolean {
     return roll.first === 10;
@@ -47,7 +46,6 @@ export class BlowingCalculator {
 
   /**
    * check if the roll is SPARE
-   * @param roll
    */
   isSpare(roll: Roll): boolean {
     return (roll.first + roll.second) === 10;
@@ -55,7 +53,6 @@ export class BlowingCalculator {
 
   /**
    * check if the roll is opem
-   * @param roll
    */
   isOpen(roll: Roll): boolean {
     return roll.first + roll.second < 10;
@@ -63,7 +60,6 @@ export class BlowingCalculator {
 
   /**
    * get total of given roll as integer
-   * @param roll
    */
   private sumIndexes(roll: Roll): number {
     return roll.first + roll.second;
@@ -71,10 +67,9 @@ export class BlowingCalculator {
 
   /**
    * set the fields of roll object to 0. This is for handling undefined or null value.
-   * @param val
    */
   private checkNext(val: Roll): Roll {
-    return val == undefined ? {first: 0, second: 0} : val
+    return val === undefined ? {first: 0, second: 0} : val;
   }
 
   private getStrikeScore(current: Roll, next: Roll) {
@@ -82,6 +77,6 @@ export class BlowingCalculator {
   }
 
   private getSpareScore(current: Roll, next: Roll) {
-    return this.sumIndexes(current) + next.first
+    return this.sumIndexes(current) + next.first;
   }
 }
