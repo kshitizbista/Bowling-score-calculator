@@ -4,7 +4,7 @@ import {AppComponent} from './app.component';
 import {StoreModule} from '@ngrx/store';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../environments/environment';
-import {BowlingPageModule} from "./bowling-page/bowling-page.module";
+import {BowlingPageModule} from './bowling-page/bowling-page.module';
 
 @NgModule({
   declarations: [

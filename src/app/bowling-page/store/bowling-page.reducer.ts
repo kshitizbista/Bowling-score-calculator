@@ -1,5 +1,5 @@
-import {createFeatureSelector, createReducer, createSelector, on} from "@ngrx/store";
-import * as BowlingPageAction from "./bowling-page.action";
+import {createFeatureSelector, createReducer, createSelector, on} from '@ngrx/store';
+import * as BowlingPageAction from './bowling-page.action';
 
 export const bowlingPageFeatureKey = 'game';
 
@@ -7,8 +7,8 @@ export const bowlingPageFeatureSelector = createFeatureSelector<BowlingState>(bo
 export const framesSelector = createSelector(bowlingPageFeatureSelector, (s1 => s1.frames));
 
 export class Roll {
-  first: number = 0;
-  second: number = 0;
+  first = 0;
+  second = 0;
   third?: number;
 }
 

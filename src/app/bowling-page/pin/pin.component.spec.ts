@@ -1,7 +1,7 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {PinComponent} from './pin.component';
-import {DebugElement} from "@angular/core";
-import {By} from "@angular/platform-browser";
+import {DebugElement} from '@angular/core';
+import {By} from '@angular/platform-browser';
 
 describe('PinComponent', () => {
   let component: PinComponent;
@@ -30,14 +30,14 @@ describe('PinComponent', () => {
     component.preparePins(10); // should create 11 buttons including 0
     fixture.detectChanges();
     const buttons = debugElement.queryAll(By.css('button'));
-    expect(buttons).toBeTruthy("could not find buttons");
+    expect(buttons).toBeTruthy('could not find buttons');
     expect(buttons.length).toBe(11);
   });
 
   it('should raises shot event when clicked', () => {
     component.shot.subscribe((pinHits: number) => {
       expect(pinHits).toBe(5);
-    })
+    });
     component.onPinsHit(5);
   });
 });

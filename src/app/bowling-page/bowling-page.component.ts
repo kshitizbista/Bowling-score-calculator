@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {BowlingState, framesSelector, Roll} from "./store/bowling-page.reducer";
-import {Subscription} from "rxjs";
-import {select, Store} from "@ngrx/store";
-import {resetGame, storeRoll} from "./store/bowling-page.action";
-import {PinComponent} from "./pin/pin.component";
-import {BlowingCalculator} from "./blowing-calculator";
+import {BowlingState, framesSelector, Roll} from './store/bowling-page.reducer';
+import {Subscription} from 'rxjs';
+import {select, Store} from '@ngrx/store';
+import {resetGame, storeRoll} from './store/bowling-page.action';
+import {PinComponent} from './pin/pin.component';
+import {BlowingCalculator} from './blowing-calculator';
 
 @Component({
   selector: 'app-bowling-page',
@@ -24,13 +24,13 @@ export class BowlingPageComponent implements OnInit, OnDestroy {
   /**
    * Holds roll count temporarily in normal play mode. Count is reset every time for a new frame
    */
-  currentRollCount: number = 0;
+  currentRollCount = 0;
 
   /**
    *  Holds roll count in bonus play mode. There can be maximum of three roll depending upon strike or
    *  spare in 10th frame
    */
-  bonusRollCount: number = 0;
+  bonusRollCount = 0;
 
   @ViewChild('pinComponent') pinComponent: PinComponent;
 
@@ -83,7 +83,7 @@ export class BowlingPageComponent implements OnInit, OnDestroy {
       this.roll = new Roll();
       this.roll.first = pinsHit;
     } else if (this.bonusRollCount === 2) {
-      this.roll.second = pinsHit
+      this.roll.second = pinsHit;
     } else {
       this.roll.third = pinsHit;
       this.setScore(this.roll, true);
